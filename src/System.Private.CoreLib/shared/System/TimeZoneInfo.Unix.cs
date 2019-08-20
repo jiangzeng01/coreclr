@@ -436,7 +436,7 @@ namespace System
 
                 fixed (byte* dirBufferPtr = dirBuffer)
                 {
-                    for(;;)
+                    for (;;)
                     {
                         IntPtr dirHandle = Interop.Sys.OpenDir(currentPath);
                         if (dirHandle == IntPtr.Zero)
@@ -1276,9 +1276,6 @@ namespace System
         /// <summary>
         /// Parses a string like Jn or n into month and day values.
         /// </summary>
-        /// <returns>
-        /// true if the parsing succeeded; otherwise, false.
-        /// </returns>
         private static void TZif_ParseJulianDay(ReadOnlySpan<char> date, out int month, out int day)
         {
             // Jn

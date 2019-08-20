@@ -690,7 +690,7 @@ PosRem:
                         }
 
                         break;
-                    } // for(;;)
+                    } // for (;;)
                 }
                 return scale;
 
@@ -790,7 +790,7 @@ ThrowOverflow:
                     goto HaveScale;
                 }
 
-                var powerOvfl = PowerOvflValues;
+                PowerOvfl[] powerOvfl = PowerOvflValues;
                 if (scale > DEC_SCALE_MAX - 9)
                 {
                     // We can't scale by 10^9 without exceeding the max scale factor.
@@ -1787,7 +1787,7 @@ ReturnZero:
                     power = -power;
                     if (power < 10)
                     {
-                        var pow10 = s_powers10[power];
+                        uint pow10 = s_powers10[power];
                         ulong low64 = UInt32x32To64((uint)mant, pow10);
                         ulong hi64 = UInt32x32To64((uint)(mant >> 32), pow10);
                         result.Low = (uint)low64;
@@ -2525,7 +2525,7 @@ done:
                 return (uint)num - div * TenToPowerNine;
             }
 
-            struct PowerOvfl
+            private struct PowerOvfl
             {
                 public readonly uint Hi;
                 public readonly ulong MidLo;
@@ -2537,7 +2537,7 @@ done:
                 }
             }
 
-            static readonly PowerOvfl[] PowerOvflValues = new[]
+            private static readonly PowerOvfl[] PowerOvflValues = new[]
             {
                 // This is a table of the largest values that can be in the upper two
                 // uints of a 96-bit number that will not overflow when multiplied

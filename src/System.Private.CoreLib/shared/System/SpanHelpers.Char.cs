@@ -10,6 +10,7 @@ using System.Runtime.Intrinsics.X86;
 
 using Internal.Runtime.CompilerServices;
 
+#pragma warning disable SA1121 // explicitly using type aliases instead of built-in types
 #if BIT64
 using nuint = System.UInt64;
 using nint = System.Int64;
@@ -992,7 +993,7 @@ namespace System
                 unchecked
                 {
                     // Flag least significant power of two bit
-                    var powerOfTwoFlag = match ^ (match - 1);
+                    ulong powerOfTwoFlag = match ^ (match - 1);
                     // Shift all powers of two into the high byte and extract
                     return (int)((powerOfTwoFlag * XorPowerOfTwoToHighChar) >> 49);
                 }

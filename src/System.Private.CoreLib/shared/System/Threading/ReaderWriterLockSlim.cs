@@ -61,7 +61,7 @@ namespace System.Threading
         // Lock specification for _spinLock:  This lock protects exactly the local fields associated with this
         // instance of ReaderWriterLockSlim.  It does NOT protect the memory associated with
         // the events that hang off this lock (eg writeEvent, readEvent upgradeEvent).
-        SpinLock _spinLock;
+        private SpinLock _spinLock;
 
         // These variables allow use to avoid Setting events (which is expensive) if we don't have to.
         private uint _numWriteWaiters;        // maximum number of threads that can be doing a WaitOne on the writeEvent
@@ -83,7 +83,7 @@ namespace System.Threading
         // Every lock instance has a unique ID, which is used by ReaderWriterCount to associate itself with the lock
         // without holding a reference to it.
         private static long s_nextLockID;
-        private long _lockID;
+        private readonly long _lockID;
 
         // See comments on ReaderWriterCount.
         [ThreadStatic]
@@ -235,8 +235,8 @@ namespace System.Threading
         //
         private struct TimeoutTracker
         {
-            private int _total;
-            private int _start;
+            private readonly int _total;
+            private readonly int _start;
 
             public TimeoutTracker(TimeSpan timeout)
             {
@@ -277,13 +277,7 @@ namespace System.Threading
                 }
             }
 
-            public bool IsExpired
-            {
-                get
-                {
-                    return RemainingMilliseconds == 0;
-                }
-            }
+            public bool IsExpired => RemainingMilliseconds == 0;
         }
 
         public bool TryEnterReadLock(TimeSpan timeout)
@@ -1421,29 +1415,11 @@ namespace System.Threading
             }
         }
 
-        public int WaitingReadCount
-        {
-            get
-            {
-                return (int)_numReadWaiters;
-            }
-        }
+        public int WaitingReadCount => (int)_numReadWaiters;
 
-        public int WaitingUpgradeCount
-        {
-            get
-            {
-                return (int)_numUpgradeWaiters;
-            }
-        }
+        public int WaitingUpgradeCount => (int)_numUpgradeWaiters;
 
-        public int WaitingWriteCount
-        {
-            get
-            {
-                return (int)_numWriteWaiters;
-            }
-        }
+        public int WaitingWriteCount => (int)_numWriteWaiters;
 
         private struct SpinLock
         {

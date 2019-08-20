@@ -31,12 +31,12 @@ namespace System.IO
         private readonly Decoder _decoder;
         private byte[]? _charBytes;
         private char[]? _charBuffer;
-        private int _maxCharsSize;  // From MaxCharBytesSize & Encoding
+        private readonly int _maxCharsSize;  // From MaxCharBytesSize & Encoding
 
         // Performance optimization for Read() w/ Unicode.  Speeds us up by ~40%
-        private bool _2BytesPerChar;
-        private bool _isMemoryStream; // "do we sit on MemoryStream?" for Read/ReadInt32 perf
-        private bool _leaveOpen;
+        private readonly bool _2BytesPerChar;
+        private readonly bool _isMemoryStream; // "do we sit on MemoryStream?" for Read/ReadInt32 perf
+        private readonly bool _leaveOpen;
         private bool _disposed;
 
         public BinaryReader(Stream input) : this(input, Encoding.UTF8, false)
@@ -85,13 +85,7 @@ namespace System.IO
             Debug.Assert(_decoder != null, "[BinaryReader.ctor]_decoder!=null");
         }
 
-        public virtual Stream BaseStream
-        {
-            get
-            {
-                return _stream;
-            }
-        }
+        public virtual Stream BaseStream => _stream;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -558,11 +552,9 @@ namespace System.IO
                 ThrowIfDisposed();
 
                 int bytesRead = 0;
-                int n = 0;
-
                 do
                 {
-                    n = _stream.Read(_buffer, bytesRead, numBytes - bytesRead);
+                    int n = _stream.Read(_buffer, bytesRead, numBytes - bytesRead);
                     if (n == 0)
                     {
                         throw Error.GetEndOfFile();

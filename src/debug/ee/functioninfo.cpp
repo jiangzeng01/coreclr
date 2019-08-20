@@ -246,7 +246,7 @@ int DebuggerJitInfo::GetFuncletIndex(CORDB_ADDRESS offsetOrAddr, GetFuncletIndex
         for ( ; (_map) < m_sequenceMap + (m_sequenceMapCount-1) && (((_map)+1)->ilOffset == (_map)->ilOffset); (_map)++);
 #else
 #define ADJUST_MAP_ENTRY(_map, _wantFirst)
-#endif // _WIN64
+#endif // WIN64EXCEPTIONS
 
 DebuggerJitInfo::DebuggerJitInfo(DebuggerMethodInfo *minfo, NativeCodeVersion nativeCodeVersion) :
     m_nativeCodeVersion(nativeCodeVersion),
@@ -384,7 +384,7 @@ DebuggerJitInfo::NativeOffset DebuggerJitInfo::MapILOffsetToNative(DebuggerJitIn
     // See if we want the map entry for the parent.
     if (ilOffset.m_funcletIndex <= PARENT_METHOD_INDEX)
     {
-#endif // _WIN64
+#endif // WIN64EXCEPTIONS
         PREFIX_ASSUME( map != NULL );
         LOG((LF_CORDB, LL_INFO10000, "DJI::MILOTN: ilOff 0x%x to nat 0x%x exact:0x%x (Entry IL Off:0x%x)\n",
              ilOffset.m_ilOffset, map->nativeStartOffset, resultOffset.m_fExact, map->ilOffset));
@@ -651,7 +651,7 @@ SIZE_T DebuggerJitInfo::MapILOffsetToNativeForSetIP(SIZE_T offsetILTo, int funcl
 
     return offsetNatTo;
 }
-#endif // _WIN64
+#endif // WIN64EXCEPTIONS
 
 // void DebuggerJitInfo::MapILRangeToMapEntryRange():   MIRTMER
 // calls MapILOffsetToNative for the startOffset (putting the
@@ -710,7 +710,7 @@ void DebuggerJitInfo::MapILRangeToMapEntryRange(SIZE_T startOffset,
     }
     else
         *end = MapILOffsetToMapEntry(endOffset - 1, NULL
-                                     WIN64_ARG(FALSE));
+                                     BIT64_ARG(FALSE));
 
     _ASSERTE(*end>=m_sequenceMap);
 
@@ -1603,13 +1603,20 @@ DebuggerJitInfo *DebuggerMethodInfo::FindOrCreateInitAndAddJitInfo(MethodDesc* f
     // The DJI may already be populated in the cache, if so CreateInitAndAddJitInfo is a no-op and that is fine.
     // CreateInitAndAddJitInfo takes a lock and checks the list again, which makes this thread-safe.
 
-    CodeVersionManager::TableLockHolder lockHolder(fd->GetCodeVersionManager());
-    CodeVersionManager *pCodeVersionManager = fd->GetCodeVersionManager();
-    NativeCodeVersion nativeCodeVersion = pCodeVersionManager->GetNativeCodeVersion(fd, startAddr);
-
-    // Some day we'll get EnC to use code versioning properly, but until then we'll get the right behavior treating all EnC versions as the default native code version.
-    if (nativeCodeVersion.IsNull())
+    NativeCodeVersion nativeCodeVersion;
+    if (fd->IsVersionable())
     {
+        CodeVersionManager::TableLockHolder lockHolder(fd->GetCodeVersionManager());
+        CodeVersionManager *pCodeVersionManager = fd->GetCodeVersionManager();
+        nativeCodeVersion = pCodeVersionManager->GetNativeCodeVersion(fd, startAddr);
+        if (nativeCodeVersion.IsNull())
+        {
+            return NULL;
+        }
+    }
+    else
+    {
+        // Some day we'll get EnC to use code versioning properly, but until then we'll get the right behavior treating all EnC versions as the default native code version.
         nativeCodeVersion = NativeCodeVersion(fd);
     }
 

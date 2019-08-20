@@ -2,16 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Text;
-using System.Runtime;
 using System.Runtime.Serialization;
-using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-using System.Security;
-using System.Threading;
-using System.Globalization;
 using System.Diagnostics;
 using System.Collections.Generic;
 
@@ -565,7 +558,7 @@ namespace System.Text
         /// as chunks (ReadOnlyMemory) of characters.  An example use is:
         ///
         ///      foreach (ReadOnlyMemory&lt;char&gt; chunk in sb.GetChunks())
-        ///         foreach(char c in chunk.Span)
+        ///         foreach (char c in chunk.Span)
         ///             { /* operation on c }
         ///
         /// It is undefined what happens if the StringBuilder is modified while the chunk
@@ -582,7 +575,7 @@ namespace System.Text
         ///    foreach (ReadOnlyMemory&lt;char&gt; chunk in sb.GetChunks())
         ///    {
         ///         var span = chunk.Span;
-        ///         for(int i = 0; i &lt; span.Length; i++)
+        ///         for (int i = 0; i &lt; span.Length; i++)
         ///             { /* operation on span[i] */ }
         ///    }
         /// </summary>
@@ -1261,7 +1254,7 @@ namespace System.Text
 
         public unsafe StringBuilder AppendJoin(string? separator, params object?[] values)
         {
-            separator = separator ?? string.Empty;
+            separator ??= string.Empty;
             fixed (char* pSeparator = separator)
             {
                 return AppendJoinCore(pSeparator, separator.Length, values);
@@ -1270,7 +1263,7 @@ namespace System.Text
 
         public unsafe StringBuilder AppendJoin<T>(string? separator, IEnumerable<T> values)
         {
-            separator = separator ?? string.Empty;
+            separator ??= string.Empty;
             fixed (char* pSeparator = separator)
             {
                 return AppendJoinCore(pSeparator, separator.Length, values);
@@ -1279,7 +1272,7 @@ namespace System.Text
 
         public unsafe StringBuilder AppendJoin(string? separator, params string?[] values)
         {
-            separator = separator ?? string.Empty;
+            separator ??= string.Empty;
             fixed (char* pSeparator = separator)
             {
                 return AppendJoinCore(pSeparator, separator.Length, values);
@@ -1319,7 +1312,7 @@ namespace System.Text
                     return this;
                 }
 
-                var value = en.Current;
+                T value = en.Current;
                 if (value != null)
                 {
                     Append(value.ToString());
@@ -1962,7 +1955,7 @@ namespace System.Text
                 throw new ArgumentException(SR.Argument_EmptyName, nameof(oldValue));
             }
 
-            newValue = newValue ?? string.Empty;
+            newValue ??= string.Empty;
 
             int deltaLength = newValue.Length - oldValue.Length;
 

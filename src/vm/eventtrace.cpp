@@ -4627,11 +4627,11 @@ VOID ETW::ExceptionLog::ExceptionThrown(CrawlFrame  *pCf, BOOL bIsReThrownExcept
 
         if (pCf->IsFrameless())
         {
-#ifndef _WIN64
+#ifndef BIT64
             exceptionEIP = (PVOID)pCf->GetRegisterSet()->ControlPC;
 #else
             exceptionEIP = (PVOID)GetIP(pCf->GetRegisterSet()->pContext);
-#endif //!_WIN64
+#endif //!BIT64
         }
         else
         {
@@ -6901,7 +6901,7 @@ VOID ETW::MethodLog::SendEventsForJitMethodsHelper(LoaderAllocator *pLoaderAlloc
         ReJITID ilCodeId = 0;
         NativeCodeVersion nativeCodeVersion;
 #ifdef FEATURE_CODE_VERSIONING
-        if (fGetCodeIds)
+        if (fGetCodeIds && pMD->IsVersionable())
         {
             CodeVersionManager *pCodeVersionManager = pMD->GetCodeVersionManager();
             _ASSERTE(pCodeVersionManager->LockOwnedByCurrentThread());

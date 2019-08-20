@@ -4,8 +4,6 @@
 
 using System.Collections;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Text;
 
 namespace System.Security
@@ -30,7 +28,6 @@ namespace System.Security
 
         private const int AttributesTypical = 4 * 2;  // 4 attributes, times 2 strings per attribute
         private const int ChildrenTypical = 1;
-        private const string Indent = "   ";
 
         private static readonly char[] s_tagIllegalCharacters = new char[] { ' ', '<', '>' };
         private static readonly char[] s_textIllegalCharacters = new char[] { '<', '>' };
@@ -203,8 +200,7 @@ namespace System.Security
 
             for (int i = 0; i < _children.Count; ++i)
             {
-                ISecurityElementFactory? iseFactory = _children[i] as ISecurityElementFactory;
-                if (iseFactory != null && !(_children[i] is SecurityElement))
+                if (_children[i] is ISecurityElementFactory iseFactory && !(_children[i] is SecurityElement))
                     _children[i] = iseFactory.CreateSecurityElement();
             }
         }
@@ -497,12 +493,12 @@ namespace System.Security
         {
             StringBuilder sb = new StringBuilder();
 
-            ToString("", sb, (obj, str) => ((StringBuilder)obj).Append(str));
+            ToString(sb, (obj, str) => ((StringBuilder)obj).Append(str));
 
             return sb.ToString();
         }
 
-        private void ToString(string indent, object obj, Action<object, string?> write)
+        private void ToString(object obj, Action<object, string?> write)
         {
             write(obj, "<");
             write(obj, _tag);
@@ -555,7 +551,7 @@ namespace System.Security
 
                     for (int i = 0; i < _children.Count; ++i)
                     {
-                        ((SecurityElement)_children[i]!).ToString(string.Empty, obj, write);
+                        ((SecurityElement)_children[i]!).ToString(obj, write);
                     }
                 }
 

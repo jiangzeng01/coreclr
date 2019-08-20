@@ -11,15 +11,13 @@
 **
 ===========================================================*/
 
-using System.Reflection;
-
 namespace System
 {
     /* By default, attributes are inherited and multiple attributes are not allowed */
     [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public sealed class AttributeUsageAttribute : Attribute
     {
-        private AttributeTargets _attributeTarget = AttributeTargets.All; // Defaults to all
+        private readonly AttributeTargets _attributeTarget = AttributeTargets.All; // Defaults to all
         private bool _allowMultiple = false; // Defaults to false
         private bool _inherited = true; // Defaults to true
 
@@ -37,10 +35,7 @@ namespace System
             _inherited = inherited;
         }
 
-        public AttributeTargets ValidOn
-        {
-            get { return _attributeTarget; }
-        }
+        public AttributeTargets ValidOn => _attributeTarget;
 
         public bool AllowMultiple
         {

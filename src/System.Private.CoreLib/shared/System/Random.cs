@@ -11,14 +11,13 @@ namespace System
         //
         private const int MBIG = int.MaxValue;
         private const int MSEED = 161803398;
-        private const int MZ = 0;
 
         //
         // Member Variables
         //
         private int _inext;
         private int _inextp;
-        private int[] _seedArray = new int[56];
+        private readonly int[] _seedArray = new int[56];
 
         //
         // Public Constants
@@ -73,7 +72,6 @@ namespace System
             }
             _inext = 0;
             _inextp = 21;
-            Seed = 1;
         }
 
         //
