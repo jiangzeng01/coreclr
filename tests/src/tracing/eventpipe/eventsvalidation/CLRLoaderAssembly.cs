@@ -43,14 +43,13 @@ namespace Tracing.Tests.CLRLoaderAssembly
         {
             Console.WriteLine("Event generating method: _eventGeneratingAction start");
             GetAssemblyPath();
-
             try
             {
                 for(int i=0; i<100; i++)
                 {
                     AssemblyLoad assemblyLoad = new AssemblyLoad();
                     
-                    assemblyLoad.LoadFromAssemblyPath(@"E:\coreclr\bin\tests\Windows_NT.x64.Debug\tracing\eventpipe\eventsvalidation\GCEEStartStop\GCEEStartStop.dll");
+                    assemblyLoad.LoadFromAssemblyPath(assemblyPath+"\\Common.dll");
                     assemblyLoad.Unload();
                 }
             }
