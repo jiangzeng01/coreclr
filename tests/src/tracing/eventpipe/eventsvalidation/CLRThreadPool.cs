@@ -64,11 +64,6 @@ namespace Tracing.Tests.CLRThreadPool
             source.Clr.ThreadPoolWorkerThreadStart += (eventData) => Event1 += 1;
             source.Clr.ThreadPoolWorkerThreadStop += (eventData) => Event2 += 1;
             
-            int Event3 = 0;
-            int Event4 = 0;
-            source.Clr.ThreadPoolWorkerThreadRetirementStart += (eventData) => Event3 += 1;
-            source.Clr.ThreadPoolWorkerThreadRetirementStop += (eventData) => Event4 += 1;
-            
             int Event5 = 0;
             int Event6 = 0;
             source.Clr.ThreadPoolWorkerThreadAdjustmentAdjustment += (eventData) => Event5 += 1;
@@ -78,11 +73,9 @@ namespace Tracing.Tests.CLRThreadPool
                 Console.WriteLine("Event counts validation");
                 Console.WriteLine("Worker thread start events: " + Event1);
                 Console.WriteLine("Worker thread stop events: " + Event2);
-                Console.WriteLine("Worker thread Retirement start events: " + Event3);
-                Console.WriteLine("Worker thread Retirement stop events: " + Event4);
                 Console.WriteLine("Worker thread Adjustment events: " + Event5);
                 Console.WriteLine("Worker thread Adjustment Sample events: " + Event6);
-                return Event1 > 1 && Event2 > 0 ? 100 : -1;
+                return Event1 > 1 && Event2 > 0 && Event5 > 1 && Event6 > 1 ? 100 : -1;
             };
         };
     } 
