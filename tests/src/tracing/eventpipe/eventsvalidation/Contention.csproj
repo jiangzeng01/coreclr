@@ -8,7 +8,7 @@
     <CLRTestPriority>1</CLRTestPriority>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="GCEvents.cs" />
+    <Compile Include="Contention.cs" />
     <ProjectReference Include="../common/common.csproj" />
   </ItemGroup>
 </Project>

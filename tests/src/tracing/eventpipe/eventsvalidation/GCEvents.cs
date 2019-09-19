@@ -62,6 +62,9 @@ namespace Tracing.Tests.GCEvents
             source.Clr.GCSuspendEEStart += (eventData) => GCSuspendEEEvents += 1;
             source.Clr.GCSuspendEEStop += (eventData) => GCSuspendEEEndEvents += 1;
 
+            int GCHeapStatsEvents =0;
+            source.Clr.GCHeapStats += (eventData) => GCHeapStatsEvents +=1;
+
             return () => {
                 Logger.logger.Log("Event counts validation");
 
@@ -80,7 +83,11 @@ namespace Tracing.Tests.GCEvents
                 bool GCSuspendEEStartStopResult = GCSuspendEEEvents >= 50 && GCSuspendEEEndEvents >= 50;
                 Logger.logger.Log("GCSuspendEEStartStopResult check: " + GCSuspendEEStartStopResult);
 
-                return GCStartStopResult && GCRestartEEStartStopResult && GCSuspendEEStartStopResult ? 100 : -1;
+                Logger.logger.Log("GCHeapStatsEvents: " + GCHeapStatsEvents);
+                bool GCHeapStatsEventsResult = GCHeapStatsEvents >= 50 && GCHeapStatsEvents >= 50;
+                Logger.logger.Log("GCHeapStatsEventsResult check: " + GCHeapStatsEvents);
+
+                return GCStartStopResult && GCRestartEEStartStopResult && GCSuspendEEStartStopResult && GCHeapStatsEventsResult ? 100 : -1;
             };
         };
     }
