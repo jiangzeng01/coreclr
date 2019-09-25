@@ -38,7 +38,7 @@ namespace ILCompiler
                             continue;
                         }
 
-                        if (method.IsMethodDefinition)
+                        if (method.IsGenericMethodDefinition)
                         {
                             continue;
                         }
@@ -105,9 +105,6 @@ namespace ILCompiler
                     continue;
 
                 if (method.IsInternalCall)
-                    continue;
-
-                if (method.IsAggressiveOptimization)
                     continue;
 
                 try
