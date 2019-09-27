@@ -28,7 +28,8 @@ namespace Tracing.Tests.Contention
 
         private static Dictionary<string, ExpectedEventCount> _expectedEventCounts = new Dictionary<string, ExpectedEventCount>()
         {
-            { "Microsoft-Windows-DotNETRuntime", -1 },
+            //registering Dynamic_All and Clr event callbacks will override each other, disable the check for the prodider and check the events counts in the callback
+            //{ "Microsoft-Windows-DotNETRuntime", -1 },
             { "Microsoft-Windows-DotNETRuntimeRundown", -1 },
         };
 

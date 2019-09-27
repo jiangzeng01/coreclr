@@ -48,7 +48,6 @@ namespace Tracing.Tests.IOThread
                 fileStream.BeginWrite(bytes, 0, bytes.Length, new AsyncCallback(asyncCallback), fileStream);
                 Thread.Sleep(1000);
             }
-            Thread.Sleep(50000);
         };
         static void asyncCallback(IAsyncResult result)
         {
@@ -61,16 +60,16 @@ namespace Tracing.Tests.IOThread
         private static Func<EventPipeEventSource, Func<int>> _DoesTraceContainEvents = (source) => 
         {
             int IOThreadCreationStartEvents = 0;
-            int TIOThreadCreationStopEvents = 0;
+            int IOThreadCreationStopEvents = 0;
             source.Clr.IOThreadCreationStart += (eventData) => IOThreadCreationStartEvents += 1;
-            source.Clr.IOThreadCreationStop += (eventData) => TIOThreadCreationStopEvents += 1;
+            source.Clr.IOThreadCreationStop += (eventData) => IOThreadCreationStopEvents += 1;
 
             return () => {
                 Logger.logger.Log("Event counts validation");
 
                 Logger.logger.Log("IOThreadCreationStartEvents: " + IOThreadCreationStartEvents);
-                Logger.logger.Log("TIOThreadCreationStopEvents: " + TIOThreadCreationStopEvents);
-                bool IOThreadCreationStartStopResult = IOThreadCreationStartEvents >= 1 && TIOThreadCreationStopEvents >= 1;
+                Logger.logger.Log("IOThreadCreationStopEvents: " + IOThreadCreationStopEvents);
+                bool IOThreadCreationStartStopResult = IOThreadCreationStartEvents >= 1 && IOThreadCreationStopEvents >= 1;
                 Logger.logger.Log("IOThreadCreationStartStopResult check: " + IOThreadCreationStartStopResult);
 
                 return IOThreadCreationStartStopResult ? 100 : -1;
