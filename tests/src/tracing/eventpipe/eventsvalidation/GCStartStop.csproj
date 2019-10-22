@@ -5,6 +5,7 @@
     <CLRTestKind>BuildAndRun</CLRTestKind>
     <DefineConstants>$(DefineConstants);STATIC</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllocationAmount64>0x1A060</AllocationAmount64>
     <CLRTestPriority>0</CLRTestPriority>
     <UnloadabilityIncompatible>true</UnloadabilityIncompatible>
   </PropertyGroup>
