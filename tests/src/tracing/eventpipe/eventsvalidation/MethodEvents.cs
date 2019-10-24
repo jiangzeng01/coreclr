@@ -58,7 +58,7 @@ namespace Tracing.Tests.MethodEvents
             int MethodLoadVerboseEvents = 0;
             int MethodUnloadVerboseEvents = 0;
             source.Clr.MethodLoadVerbose += (eventData) => MethodLoadVerboseEvents += 1;
-            source.Clr.MethodUnloadVerbose += (eventData) => MethodUnloadVerboseEvents += 1;
+            //source.Clr.MethodUnloadVerbose += (eventData) => MethodUnloadVerboseEvents += 1;
 
             int MethodJittingStartedEvents = 0;            
             source.Clr.MethodJittingStarted += (eventData) => MethodJittingStartedEvents += 1;
@@ -66,8 +66,8 @@ namespace Tracing.Tests.MethodEvents
             return () => {
                 Logger.logger.Log("Event counts validation");
                 Logger.logger.Log("MethodLoadVerboseEvents: " + MethodLoadVerboseEvents);
-                Logger.logger.Log("MethodUnloadVerboseEvents: " + MethodUnloadVerboseEvents);
-                bool MethoderboseResult = MethodLoadVerboseEvents >= 100 && MethodUnloadVerboseEvents >= 1;
+                //Logger.logger.Log("MethodUnloadVerboseEvents: " + MethodUnloadVerboseEvents);
+                bool MethoderboseResult = MethodLoadVerboseEvents >= 100;
                 Logger.logger.Log("MethoderboseResult check: " + MethoderboseResult);
 
                 Logger.logger.Log("MethodJittingStartedEvents: " + MethodJittingStartedEvents);
