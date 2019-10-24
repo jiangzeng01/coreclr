@@ -67,13 +67,13 @@ namespace Tracing.Tests.MethodEvents
                 Logger.logger.Log("Event counts validation");
                 Logger.logger.Log("MethodLoadVerboseEvents: " + MethodLoadVerboseEvents);
                 //Logger.logger.Log("MethodUnloadVerboseEvents: " + MethodUnloadVerboseEvents);
-                bool MethoderboseResult = MethodLoadVerboseEvents >= 100;
-                Logger.logger.Log("MethoderboseResult check: " + MethoderboseResult);
+                bool MethodVerboseResult = MethodLoadVerboseEvents >= 100;
+                Logger.logger.Log("MethodVerboseResult check: " + MethodVerboseResult);
 
                 Logger.logger.Log("MethodJittingStartedEvents: " + MethodJittingStartedEvents);
                 bool MethodJittingStartedResult = MethodJittingStartedEvents >= 100;
                 Logger.logger.Log("MethodJittingStartedResult check: " + MethodJittingStartedResult);
-                return MethoderboseResult && MethodJittingStartedResult ? 100 : -1;
+                return MethodVerboseResult && MethodJittingStartedResult ? 100 : -1;
             };
         };
     }
